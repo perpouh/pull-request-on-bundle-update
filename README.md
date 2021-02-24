@@ -7,7 +7,7 @@ This Github Action is running on **[ruby2.6-alipne](https://github.com/docker-li
 ## Usage
 ※ Without Gemfile and Gemfile.lock, this workflow is failure. 
 
-```
+```diff
 name: pull request on bundle update
 on:
   schedule:
@@ -30,6 +30,7 @@ jobs:
           git_email: test@example.com
           reviewers: supermanner,hoge,fuga // optional
           bundler_version: 2.0.1 // optional
++         target_branch: develop // optional
 ```
 
 ## Demo

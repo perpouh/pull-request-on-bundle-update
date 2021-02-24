@@ -19,6 +19,9 @@ inputs:
   bundler_version:
     description: set bundler version
     required: false
+  target_branch:
+    description: target branch to create pull-request
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -26,3 +29,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GIT_USER_NAME: ${{ inputs.git_user_name }}
     GIT_EMAIL: ${{ inputs.git_email }}
+    TARGET_BRANCH: ${{ inputs.target_branch }}

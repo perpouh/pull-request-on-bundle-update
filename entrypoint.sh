@@ -17,8 +17,12 @@ if [[ -z "$GIT_EMAIL" ]]; then
   exit 1
 fi
 
+if [[ -z "$TARGET_BRANCH" ]]; then
+  TARGET_BRANCH="master"
+fi
+
 git remote set-url origin "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
-git checkout master
+git checkout ${TARGET_BRANCH}
 BRANCH_NAME="bundle_update/$(date "+%Y%m%d_%H%M%S")"
 git checkout -b ${BRANCH_NAME}
 
@@ -37,7 +41,7 @@ bundle update
 bundle diff -f md_table
 BUNDLE_DIFF="$(bundle diff -f md_table)"
 
-if [ "$(git diff --name-only origin/master --diff-filter=d | wc -w)" == 0 ]; then
+if [ "$(git diff --name-only origin/$TARGET_BRANCH --diff-filter=d | wc -w)" == 0 ]; then
   echo "not update"
   exit 1
 fi
@@ -59,7 +63,7 @@ if [[ -n "$INPUT_REVIEWERS" ]]; then
   PR_ARG="$PR_ARG -r \"$INPUT_REVIEWERS\""
 fi
 
-COMMAND="hub pull-request -b master -h $BRANCH_NAME --no-edit $PR_ARG || true"
+COMMAND="hub pull-request -b $TARGET_BRANCH -h $BRANCH_NAME --no-edit $PR_ARG || true"
 
 echo "$COMMAND"
 sh -c "$COMMAND"
